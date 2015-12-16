@@ -9,6 +9,7 @@ import invalid.domain.battleship.pieces.Peg;
 public class AIOpponent implements AbstractOpponent {
 	Random rand;
 	SelfBoard board;
+	
 	boolean foundTrend;
 	boolean lookingForTrend;
 	
@@ -24,7 +25,9 @@ public class AIOpponent implements AbstractOpponent {
 	
 	@Override
 	public Peg getMove() {
-		return null;
+		if (!lookingForTrend && !foundTrend) {
+			
+		}
 	}
 	
 	@Override
