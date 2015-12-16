@@ -1,10 +1,12 @@
 package invalid.domain.battleship.board;
 
 import invalid.domain.battleship.pieces.Ship;
+import invalid.domain.battleship.pieces.ShipType;
 import invalid.domain.battleship.Battleship;
 import invalid.domain.battleship.pieces.Peg;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class SelfBoard {
 	public final int BOARD_LEN_X;
@@ -85,14 +87,69 @@ public class SelfBoard {
 		Battleship.printDebug("Adding ship");
 		Battleship.printDebug(ship);
 		for (Ship s : ships) {
-			for (int i = s.START_POS; i <= s.END_POS; i++) {
-				if (s.AXIS_ALIGNED == 'X') {
-					if (ship.isHit(new Peg(s.ALIGN_AXIS_NUM, i)))
-						return false;
-				}
+			for (Peg p : ship.getPegs()) {
+				if (s.isHit(p))
+					return false;
 			}
 		}
 		
+		ships.add(ship);
 		return true;
+	}
+	
+	public void addShipsRand() {
+		Battleship.printDebug("Placing ships randomly...");
+		Random rand = new Random();
+		ArrayList<Peg> usedSpaces = new ArrayList<Peg>();
+		char currentAxis = ' ';
+		ShipType currentShip = null;
+		int currentX = 0;
+		int secondX = 0;
+		int currentY = 0;
+		int secondY = 0;
+		boolean searching = true;
+		
+		for (int i = 0; i < 5; i++) {
+			searching = true;
+			switch(i) {
+			case 0:
+				currentShip = ShipType.CARRIER;
+				break;
+			case 1:
+				currentShip = ShipType.BATTLESHIP;
+				break;
+			case 2:
+				currentShip = ShipType.CRUISER;
+				break;
+			case 3:
+				currentShip = ShipType.SUBMARINE;
+				break;
+			case 4:
+				currentShip = ShipType.DESTROYER;
+				break;
+			default:
+				break;
+			}
+			
+			while (searching) {
+				currentAxis = (rand.nextInt(2) == 0) ? 'y' : 'x';
+				if (currentAxis == 'y') {
+					currentX = rand.nextInt(10 - currentShip.getNumSpaces()) + 1;
+					secondX = (currentX + currentShip.getNumSpaces()) - 1;
+					currentY = rand.nextInt(10) + 1;
+					secondY = currentY;
+				} else {
+					currentY = rand.nextInt(10 - currentShip.getNumSpaces()) + 1;
+					secondY = (currentY + currentShip.getNumSpaces()) - 1;
+					currentX = rand.nextInt(10) + 1;
+					secondX = currentX;
+				}
+				
+				if(addShip(new Ship(currentShip, new Peg(currentX, currentY), 
+						new Peg(secondX, secondY), currentAxis)))
+					searching = false;
+			}
+		}
+		
 	}
 }

@@ -1,5 +1,7 @@
 package invalid.domain.battleship;
 
+import java.util.Random;
+
 import invalid.domain.battleship.board.SelfBoard;
 import invalid.domain.battleship.console.ConsoleManager;
 import invalid.domain.battleship.pieces.Peg;
@@ -15,8 +17,10 @@ public class Battleship {
 	
 	public static void main(String[] args) {
 		//gui = new BattleshipGui();
-		Ship s = new Ship(ShipType.BATTLESHIP, new Peg(3, 2), new Peg(3, 6), 'x');
-		
+		debug = true;
+		SelfBoard board = new SelfBoard();
+		board.addShipsRand();
+		Battleship.printDebug(board.getShips());
 	}
 	
 	public static GameThread getGameMan() {

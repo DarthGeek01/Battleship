@@ -1,5 +1,7 @@
 package invalid.domain.battleship.pieces;
 
+import java.util.ArrayList;
+
 public class Ship {
 	/**
 	 * {@link ShipType} representing the type of this ship 
@@ -66,5 +68,30 @@ public class Ship {
 			return START_POS.getX();
 		else
 			return START_POS.getY();
+	}
+	
+	/**
+	 * Creates an ArrayList of all the spaces occupied by the ship, represented by Pegs
+	 * 
+	 * @return	An ArrayList of Pegs representing all of the spaces occupied by this ship
+	 */
+	public ArrayList<Peg> getPegs() {
+		ArrayList<Peg> newPegs = new ArrayList<>();
+		if (AXIS_ALIGNED == 'x') {
+			for (int i = START_POS.getY(); i <= END_POS.getY(); i++)
+				newPegs.add(new Peg(this.getAxisValue(), i));
+		} else if (AXIS_ALIGNED == 'y') {
+			for (int i = START_POS.getX(); i <= END_POS.getX(); i++)
+				newPegs.add(new Peg(i, this.getAxisValue()));
+		}
+		
+		return newPegs;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s. Start: (%s, %s). End: (%s, %s). Axis: %c", 
+				SHIP_TYPE.toString(), START_POS.getX(), START_POS.getY(), END_POS.getX(), 
+				END_POS.getY(), AXIS_ALIGNED);
 	}
 }
